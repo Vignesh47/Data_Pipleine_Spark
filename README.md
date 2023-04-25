@@ -13,5 +13,6 @@ run the following to install the dependencies.
 pip install -r requirements.txt
 ```
 ```commandline
-python main.py
+python main.py -> for main function
+python test_integration.py for unittesting
 ```
