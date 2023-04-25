@@ -15,7 +15,7 @@ class Storage:
             # save the dataframe into csv format
             output_file_path = os.path.join(os.getcwd(), "output", f"Petition_{datetime.datetime.now()}")
             base_data.write.csv(output_file_path, header=True)
-            logging.info("File has been stored here")
+            logging.info("The File has been stored successfully")
         except Exception as exp:
             logging.error("Storage has been failed.>" + str(exp))
             raise Exception(" Output Directorey is not available ")
