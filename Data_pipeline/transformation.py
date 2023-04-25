@@ -13,12 +13,12 @@ class Transform:
 
     def __init__(self,spark):
         self.spark = spark
-    def transform_data(self,raw_data):
+    def transform_data(self, raw_data):
         try:
+            print(raw_data)
             logger = logging.getLogger("Transform")
             # select the required columns and rename them to use the values from the label field as column names
-            df_schema = raw_data.select(
-                col("abstract._value").alias("abstract"),
+            df_schema = raw_data.select(col("abstract._value").alias("abstract"),
                 col("numberOfSignatures").alias("numberOfSignatures"),
                 col("label._value").alias("label"))
 
@@ -27,8 +27,7 @@ class Transform:
 
             # Step 2: Define a UDF to clean the text data
             # Clean text
-            df_clean = df_with_id.select('Petition_id',
-                                         (lower(regexp_replace('abstract', "[^a-zA-Z\\s]", "")).alias('Clean_text')))
+            df_clean = df_with_id.select('Petition_id',(lower(regexp_replace('abstract', "[^a-zA-Z\\s]", "")).alias('Clean_text')))
 
             # Tokenize text
             tokenizer = Tokenizer(inputCol='Clean_text', outputCol='Words_token')
@@ -50,14 +49,13 @@ class Transform:
             df_word_occurance = df_explode.groupBy('Petition_id', 'Word').count()
 
             # extract the unique values from the 'word' column, list the top 20 most common words in descending order, and convert them into separate columns with their counts for each petition_id
-            most_common_words = [row['Word'] for row in
-                                 df_word_occurance.groupBy('Word').count().orderBy(desc('count')).limit(20).collect()]
-            final_petition_data = df_word_occurance.groupBy('Petition_id').pivot('Word', most_common_words).sum(
-                'count').na.fill(0).orderBy('Petition_id')
+            most_common_words = [row['Word'] for row in df_word_occurance.groupBy('Word').count().orderBy(desc('count')).limit(20).collect()]
+            final_petition_data = df_word_occurance.groupBy('Petition_id').pivot('Word', most_common_words).sum('count').na.fill(0).orderBy('Petition_id')
 
             # show the result
             final_petition_data.show()
-            logging.info("transformation completed")
+            logging.info("Transformation completed")
+
         except Exception as exp:
             logging.error("Transformation Process has been failed.>" + str(exp))
             raise Exception(" Raw data is not available. ")
