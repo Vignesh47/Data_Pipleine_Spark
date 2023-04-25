@@ -39,7 +39,6 @@ if __name__ == "__main__":
     pipeline_new = data_pipeline()
     pipeline_new.spark_build()
     pipeline_new.pipeline()
-    unittest.main()
 
 
 
