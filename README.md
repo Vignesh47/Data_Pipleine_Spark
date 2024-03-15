@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # My project
 
 The given Input data has to loaded into Spark Dataframe and transformed into cleaned dataframe based on the use case and stored in csv Format
@@ -18,5 +18,4 @@ python main.py -> for main function
 python test_integration.py for unittesting
 ```
 =======
-# JLR
->>>>>>> 9993b8ec4b4a385bfe766ebbb33ec82d9cc2de6c
+
